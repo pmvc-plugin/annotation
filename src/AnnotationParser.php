@@ -5,6 +5,8 @@ class AnnotationParser extends \PMVC\HashMap
 {
     private $keyPattern = "[A-z0-9\_\-]+";
     private $endPattern = '[ ]*(?:@|\r\n|\n)';
+    private $rawDocBlock; 
+
     public function __construct($str)
     {
         $this->rawDocBlock = $str;
@@ -38,36 +40,36 @@ class AnnotationParser extends \PMVC\HashMap
         }
     }
 
-    public function getDataType($name, $defaultCol=null)
+    public function getDataType($name, $lastColName=null)
     {
-        return $this->parseDataTypes($this[$name], $defaultCol);
+        return $this->parseDataTypes($this[$name], $lastColName);
     }
 
-    public function parseDataTypes($declarations, $defaultCol=null)
+    public function parseDataTypes($declarations, $lastColName=null)
     {
         $declarations = \PMVC\toArray($declarations);
         foreach ($declarations as &$declaration) {
-            $declaration = $this->parseDataType($declaration, $defaultCol);
+            $declaration = $this->_parseDataType($declaration, $lastColName);
         }
         return $declarations;
     }
 
-    private function parseDataType($declaration, $defaultCol=null)
+    private function _parseDataType($declaration, $lastColName)
     {
-        $declaration = explode(' ', $declaration);
+        $declaration = preg_split('/[\s]+/', $declaration);
         $last = join(' ', array_slice($declaration, 2));
         $json = \PMVC\fromJson($last);
-        $declaration = array(
-                    'type' => $declaration[0],
-                    'name' => $declaration[1]
-                );
+        $declaration = [ 
+            'type' => $declaration[0],
+            'name' => $declaration[1]
+        ];
         if (!is_string($json)) {
-            $declaration = \PMVC\array_merge($declaration, (array)$json);
+            $declaration = \PMVC\arrayMerge($declaration, (array)$json);
         } else {
-            if (is_null($defaultCol)) {
+            if (is_null($lastColName)) {
                 $declaration[] = $json;
             } else {
-                $declaration[$defaultCol] = $json;
+                $declaration[$lastColName] = $json;
             }
         }
         return $declaration;

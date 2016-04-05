@@ -24,6 +24,10 @@ class annotation extends \PMVC\PlugIn
         if (is_a($s,'Closure')) {
             $doc = $reader->getFunction($s);
         }
+        if (empty($doc)) {
+            return !trigger_error('Can\'t find annotation. '.print_r($s,true));
+        }
+
         $parser = new AnnotationParser($doc);
         return $parser; 
     }

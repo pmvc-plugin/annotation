@@ -1,25 +1,68 @@
 <?php
-PMVC\Load::plug();
-PMVC\addPlugInFolder('../');
-class HelloTest extends PHPUnit_Framework_TestCase
+namespace PMVC\PlugIn\annotation;
+use PHPUnit_Framework_TestCase;
+
+\PMVC\Load::plug();
+\PMVC\addPlugInFolder('../');
+
+class AnnotationTest extends PHPUnit_Framework_TestCase
 {
+    private $_plug = 'annotation';
     function testPlugin()
     {
         ob_start();
-        $plug = 'hello_world';
-        print_r(PMVC\plug($plug));
+        print_r(\PMVC\plug($this->_plug));
         $output = ob_get_contents();
         ob_end_clean();
-        $this->assertContains($plug,$output);
+        $this->assertContains($this->_plug,$output);
     }
 
-    function testHello()
+    function testGetAnnotation()
     {
-        $willSay = 'hello, World!';
-        ob_start();
-        PMVC\plug('hello_world')->say($willSay);
-        $output = ob_get_contents();
-        ob_end_clean();
-        $this->assertContains($willSay,$output);
+        $plug = \PMVC\plug($this->_plug);
+        $annotation = $plug->get([__NAMESPACE__.'\fakeClass','fakeFunction']);
+        $expected = 'abcd';
+        $this->assertEquals($expected, $annotation['fake1']);
+    }
+
+    function testParseDataTypeAnnotation()
+    {
+        $plug = \PMVC\plug($this->_plug);
+        $annotation = $plug->get([__NAMESPACE__.'\fakeClass','fake2']);
+        $dataType = $annotation->getDataType('params');
+        $expected = [
+            [
+                'type'=>'string',
+                'name'=>'$abc',
+                '111 222'
+            ],
+            [
+                'type'=>'array',
+                'name'=>'$def',
+                '333 444'
+            ]
+        ];
+        $this->assertEquals($expected, $dataType);
+    }
+}
+
+
+class fakeClass
+{
+    /**
+     * @fake1 abcd
+     */
+    public static function fakeFunction()
+    {
+
+    }
+
+    /**
+     * @params string $abc 111 222
+     * @params array  $def 333 444
+     */
+    public static function fake2()
+    {
+
     }
 }
