@@ -10,7 +10,7 @@ class annotation extends \PMVC\PlugIn
 {
     public function get($s)
     {
-        $doc = false;
+        $doc = null;
         $reader = new AnnotationReader(); 
         if (is_string($s)) {
             if (class_exists($s)) {
@@ -24,7 +24,7 @@ class annotation extends \PMVC\PlugIn
         if (is_a($s,'Closure')) {
             $doc = $reader->getFunction($s);
         }
-        if (empty($doc)) {
+        if (is_null($doc)) {
             return !trigger_error('Can\'t find annotation. '.print_r($s,true));
         }
 

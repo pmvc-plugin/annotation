@@ -9,6 +9,7 @@ class AnnotationParser extends \PMVC\HashMap
 
     public function __construct($str)
     {
+        parent::__construct();
         $this->rawDocBlock = $str;
         $this->parse();
     }
