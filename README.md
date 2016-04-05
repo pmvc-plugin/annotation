@@ -27,3 +27,5 @@
 #### 2.2 Or use composer command-line
    * php composer.phar require pmvc-plugin/annotation
 
+## How to use?
+https://github.com/pmvc-plugin/annotation/blob/master/test.php
