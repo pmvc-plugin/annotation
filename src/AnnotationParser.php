@@ -65,7 +65,7 @@ class AnnotationParser extends \PMVC\HashMap
             'name' => $declaration[1]
         ];
         if (!is_string($json)) {
-            $declaration = \PMVC\arrayMerge($declaration, (array)$json);
+            $declaration = array_replace($declaration, (array)$json);
         } else {
             if (is_null($lastColName)) {
                 $declaration[] = $json;

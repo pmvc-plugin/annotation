@@ -3,7 +3,7 @@ namespace PMVC\PlugIn\annotation;
 use PHPUnit_Framework_TestCase;
 
 \PMVC\Load::plug();
-\PMVC\addPlugInFolder('../');
+\PMVC\addPlugInFolders(['../']);
 
 class AnnotationTest extends PHPUnit_Framework_TestCase
 {
