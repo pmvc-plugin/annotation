@@ -5,19 +5,31 @@ class AnnotationParser extends \PMVC\HashMap
 {
     private $keyPattern = "[A-z0-9\_\-]+";
     private $endPattern = '[ ]*(?:@|\r\n|\n)';
-    private $rawDocBlock; 
+    private $_rawDocBlock; 
+    private $_data;
 
-    public function __construct($str)
+    public function __construct(array $data)
     {
         parent::__construct();
-        $this->rawDocBlock = $str;
+        $this->_rawDocBlock = $data['doc'];
+        $this->_data = $data;
         $this->parse();
+    }
+
+    public function getFile()
+    {
+        return $this->_data['file'];
+    }
+
+    public function getStartLine()
+    {
+        return $this->_data['startLine'];
     }
 
     private function parse()
     {
         $pattern = "/@(?=(.*)".$this->endPattern.")/U";
-        preg_match_all($pattern, $this->rawDocBlock, $matches);
+        preg_match_all($pattern, $this->_rawDocBlock, $matches);
         foreach ($matches[1] as $rawParameter) {
             if (preg_match("/^(".$this->keyPattern.") (.*)$/", $rawParameter, $match)) {
                 $json = \PMVC\fromJson($match[2]);
