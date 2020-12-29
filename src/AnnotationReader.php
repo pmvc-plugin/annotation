@@ -8,14 +8,14 @@ use ReflectionMethod;
 
 class AnnotationReader
 {
-
     function getClass($class)
     {
         $reflection = new ReflectionClass($class);
         return [
+            'attrs' => $reflection->getAttributes(),
             'doc' => $reflection->getDocComment(),
-            'file'=> $reflection->getFileName(),
-            'startLine'=> $reflection->getStartLine(),
+            'file' => $reflection->getFileName(),
+            'startLine' => $reflection->getStartLine(),
         ];
     }
 
@@ -23,20 +23,22 @@ class AnnotationReader
     {
         $reflection = new ReflectionFunction($func);
         return [
+            'attrs' => $reflection->getAttributes(),
             'doc' => $reflection->getDocComment(),
-            'file'=> $reflection->getFileName(),
-            'startLine'=> $reflection->getStartLine(),
+            'file' => $reflection->getFileName(),
+            'startLine' => $reflection->getStartLine(),
         ];
     }
 
-    function getMethod($class,$method)
+    function getMethod($class, $method)
     {
         $reflection = new ReflectionMethod($class, $method);
         $class = new ReflectionClass($class);
         return [
+            'attrs' => $reflection->getAttributes(),
             'doc' => $reflection->getDocComment(),
-            'file'=> $class->getFileName(),
-            'startLine'=> $class->getStartLine(),
+            'file' => $class->getFileName(),
+            'startLine' => $class->getStartLine(),
         ];
     }
 }

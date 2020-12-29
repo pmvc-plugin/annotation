@@ -5,7 +5,7 @@ class AnnotationParser extends \PMVC\HashMap
 {
     private $keyPattern = "[A-z0-9\_\-]+";
     private $endPattern = '[ ]*(?:@|\r\n|\n)';
-    private $_rawDocBlock; 
+    private $_rawDocBlock;
     private $_data;
 
     public function __construct(array $data)
@@ -28,24 +28,33 @@ class AnnotationParser extends \PMVC\HashMap
 
     private function parse()
     {
-        $pattern = "/@(?=(.*)".$this->endPattern.")/U";
+        $pattern = "/@(?=(.*)" . $this->endPattern . ")/U";
         preg_match_all($pattern, $this->_rawDocBlock, $matches);
         foreach ($matches[1] as $rawParameter) {
-            if (preg_match("/^(".$this->keyPattern.") (.*)$/", $rawParameter, $match)) {
+            if (
+                preg_match(
+                    "/^(" . $this->keyPattern . ") (.*)$/",
+                    $rawParameter,
+                    $match
+                )
+            ) {
                 $json = \PMVC\fromJson($match[2]);
                 if (isset($this[$match[1]])) {
-                    $var = (array)$this[$match[1]];
+                    $var = (array) $this[$match[1]];
                     if (!is_numeric(implode(array_keys($var)))) {
-                        $var = array($var);
+                        $var = [$var];
                     }
-                    $this[$match[1]] = \array_merge(
-                        $var,
-                        array($json)
-                    );
+                    $this[$match[1]] = \array_merge($var, [$json]);
                 } else {
                     $this[$match[1]] = $json;
                 }
-            } elseif (preg_match("/^".$this->keyPattern."$/", $rawParameter, $match)) {
+            } elseif (
+                preg_match(
+                    "/^" . $this->keyPattern . "$/",
+                    $rawParameter,
+                    $match
+                )
+            ) {
                 $this[$rawParameter] = true;
             } else {
                 $this[$rawParameter] = null;
@@ -53,12 +62,12 @@ class AnnotationParser extends \PMVC\HashMap
         }
     }
 
-    public function getDataType($name, $lastColName=null)
+    public function getDataType($name, $lastColName = null)
     {
         return $this->parseDataTypes($this[$name], $lastColName);
     }
 
-    public function parseDataTypes($declarations, $lastColName=null)
+    public function parseDataTypes($declarations, $lastColName = null)
     {
         $declarations = \PMVC\toArray($declarations);
         foreach ($declarations as &$declaration) {
@@ -72,12 +81,12 @@ class AnnotationParser extends \PMVC\HashMap
         $declaration = preg_split('/[\s]+/', $declaration);
         $last = join(' ', array_slice($declaration, 2));
         $json = \PMVC\fromJson($last);
-        $declaration = [ 
+        $declaration = [
             'type' => $declaration[0],
-            'name' => $declaration[1]
+            'name' => $declaration[1],
         ];
         if (!is_string($json)) {
-            $declaration = array_replace($declaration, (array)$json);
+            $declaration = array_replace($declaration, (array) $json);
         } else {
             if (is_null($lastColName)) {
                 $declaration[] = $json;

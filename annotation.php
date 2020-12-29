@@ -5,9 +5,30 @@ namespace PMVC\PlugIn\annotation;
 \PMVC\l(__DIR__.'/src/AnnotationParser.php');
 
 ${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.'\annotation';
+use ReflectionClass;
 
 class annotation extends \PMVC\PlugIn
 {
+    public function getAttrs($any)
+    {
+      $attrData = $this->getRawAnnotation($any);
+      $attrs = \PMVC\get($attrData, 'attrs');
+      $result = [];
+      if ($attrs) {
+        foreach($attrs as $a) {
+          $name = $a->getName();
+          $args = $a->getArguments();
+          $obj = (new ReflectionClass($name))->newInstanceArgs($args);
+          $result[] = [
+            "name" => $name,
+            "args" => $args,
+            "obj" => $obj,
+          ];
+        }
+      }
+      return $result;
+    }
+
     public function get($s)
     {
         $doc = $this->getRawAnnotation($s);

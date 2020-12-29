@@ -1,11 +1,10 @@
 <?php
+
 namespace PMVC\PlugIn\annotation;
-use PHPUnit_Framework_TestCase;
 
-\PMVC\Load::plug();
-\PMVC\addPlugInFolders(['../']);
+use PMVC\PMVC_TestCase;
 
-class AnnotationTest extends PHPUnit_Framework_TestCase
+class AnnotationTest extends PMVC_TestCase
 {
     private $_plug = 'annotation';
     function testPlugin()
@@ -14,13 +13,13 @@ class AnnotationTest extends PHPUnit_Framework_TestCase
         print_r(\PMVC\plug($this->_plug));
         $output = ob_get_contents();
         ob_end_clean();
-        $this->assertContains($this->_plug,$output);
+        $this->haveString($this->_plug,$output);
     }
 
     function testGetAnnotation()
     {
         $plug = \PMVC\plug($this->_plug);
-        $annotation = $plug->get([__NAMESPACE__.'\fakeClass','fakeFunction']);
+        $annotation = $plug->get([__NAMESPACE__.'\FakeClass','fakeFunction']);
         $expected = 'abcd';
         $this->assertEquals($expected, $annotation['fake1']);
     }
@@ -28,7 +27,7 @@ class AnnotationTest extends PHPUnit_Framework_TestCase
     function testParseDataTypeAnnotation()
     {
         $plug = \PMVC\plug($this->_plug);
-        $annotation = $plug->get([__NAMESPACE__.'\fakeClass','fake2']);
+        $annotation = $plug->get([__NAMESPACE__.'\FakeClass','fake2']);
         $dataType = $annotation->getDataType('params');
         $expected = [
             [
@@ -47,7 +46,7 @@ class AnnotationTest extends PHPUnit_Framework_TestCase
 }
 
 
-class fakeClass
+class FakeClass
 {
     /**
      * @fake1 abcd
