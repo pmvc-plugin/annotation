@@ -12,7 +12,7 @@ class AnnotationReader
     {
         $reflection = new ReflectionClass($class);
         return [
-            'attrs' => $reflection->getAttributes(),
+            'attrs' => is_callable([$reflection, 'getAttributes']) ? $reflection->getAttributes() : null,
             'doc' => $reflection->getDocComment(),
             'file' => $reflection->getFileName(),
             'startLine' => $reflection->getStartLine(),
@@ -23,7 +23,7 @@ class AnnotationReader
     {
         $reflection = new ReflectionFunction($func);
         return [
-            'attrs' => $reflection->getAttributes(),
+            'attrs' => is_callable([$reflection, 'getAttributes']) ? $reflection->getAttributes() : null,
             'doc' => $reflection->getDocComment(),
             'file' => $reflection->getFileName(),
             'startLine' => $reflection->getStartLine(),
@@ -35,7 +35,7 @@ class AnnotationReader
         $reflection = new ReflectionMethod($class, $method);
         $class = new ReflectionClass($class);
         return [
-            'attrs' => $reflection->getAttributes(),
+            'attrs' => is_callable([$reflection, 'getAttributes']) ? $reflection->getAttributes() : null,
             'doc' => $reflection->getDocComment(),
             'file' => $class->getFileName(),
             'startLine' => $class->getStartLine(),

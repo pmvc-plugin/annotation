@@ -1,10 +1,9 @@
 <?php
-namespace PMVC;
-
 $path = __DIR__.'/vendor/autoload.php';
 require $path;
-Load::plug();
-addPlugInFolders(['../']);
+\PMVC\Load::plug();
+\PMVC\addPlugInFolders(['../']);
+
 if (!class_exists('PHPUnit_Framework_TestCase')) {
   class PHPUnit_Framework_TestCase extends
     \PHPUnit\Framework\TestCase

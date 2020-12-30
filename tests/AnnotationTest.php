@@ -2,7 +2,7 @@
 
 namespace PMVC\PlugIn\annotation;
 
-use PMVC\PMVC_TestCase;
+use PMVC_TestCase;
 
 class AnnotationTest extends PMVC_TestCase
 {
