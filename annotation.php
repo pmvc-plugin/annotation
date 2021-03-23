@@ -13,17 +13,20 @@ class annotation extends \PMVC\PlugIn
     {
       $attrData = $this->getRawAnnotation($any);
       $attrs = \PMVC\get($attrData, 'attrs');
-      $result = [];
+      $result = [
+        "data"=>[],
+        "obj"=>[],
+      ];
       if ($attrs) {
         foreach($attrs as $a) {
           $name = $a->getName();
           $args = $a->getArguments();
           $obj = (new ReflectionClass($name))->newInstanceArgs($args);
-          $result[] = [
-            "name" => $name,
-            "args" => $args,
-            "obj" => $obj,
+          $result["data"][$name] = [
+              "name" => $name,
+              "args" => $args,
           ];
+          $result["obj"][$name] = $obj; 
         }
       }
       return $result;
