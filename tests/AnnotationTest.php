@@ -43,6 +43,18 @@ class AnnotationTest extends PMVC_TestCase
         ];
         $this->assertEquals($expected, $dataType);
     }
+
+    function testGetSameKey() {
+        $plug = \PMVC\plug($this->_plug);
+        $annotation = $plug->get([__NAMESPACE__.'\FakeClass','fake2']);
+        $this->assertEquals(
+          [
+            'string $abc 111 222',
+            'array  $def 333 444'
+          ],
+          $annotation['params']
+        );
+    }
 }
 
 
@@ -64,4 +76,5 @@ class FakeClass
     {
 
     }
+
 }

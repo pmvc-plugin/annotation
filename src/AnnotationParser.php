@@ -39,15 +39,12 @@ class AnnotationParser extends \PMVC\HashMap
                 )
             ) {
                 $json = \PMVC\fromJson($match[2]);
-                if (isset($this[$match[1]])) {
-                    $var = (array) $this[$match[1]];
-                    if (!is_numeric(implode(array_keys($var)))) {
-                        $var = [$var];
-                    }
-                    $this[$match[1]] = \array_merge($var, [$json]);
-                } else {
-                    $this[$match[1]] = $json;
+                if (is_string($json)) {
+                  $json = trim($json);
                 }
+                $this[[]] = [
+                  $match[1] => $json
+                ];
             } elseif (
                 preg_match(
                     "/^" . $this->keyPattern . "$/",
