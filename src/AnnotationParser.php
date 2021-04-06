@@ -3,17 +3,17 @@ namespace PMVC\PlugIn\annotation;
 
 class AnnotationParser extends \PMVC\HashMap
 {
-    private $keyPattern = "[A-z0-9\_\-]+";
+    private $keyPattern = '[A-z0-9\_\-]+';
     private $endPattern = '[ ]*(?:@|\r\n|\n)';
     private $_rawDocBlock;
     private $_data;
 
-    public function __construct(array $data)
+    public function __construct(array $data, $keepRawData)
     {
         parent::__construct();
         $this->_rawDocBlock = $data['doc'];
         $this->_data = $data;
-        $this->parse();
+        $this->parse($keepRawData);
     }
 
     public function getFile()
@@ -26,28 +26,28 @@ class AnnotationParser extends \PMVC\HashMap
         return $this->_data['startLine'];
     }
 
-    private function parse()
+    private function parse($keepRawData)
     {
-        $pattern = "/@(?=(.*)" . $this->endPattern . ")/U";
+        $pattern = '/@(?=(.*)' . $this->endPattern . ')/U';
         preg_match_all($pattern, $this->_rawDocBlock, $matches);
         foreach ($matches[1] as $rawParameter) {
             if (
                 preg_match(
-                    "/^(" . $this->keyPattern . ") (.*)$/",
+                    '/^(' . $this->keyPattern . ") (.*)$/",
                     $rawParameter,
                     $match
                 )
             ) {
-                $json = \PMVC\fromJson($match[2]);
+                $json = $keepRawData ? $match[2] : \PMVC\fromJson($match[2]);
                 if (is_string($json)) {
-                  $json = trim($json);
+                    $json = trim($json);
                 }
                 $this[[]] = [
-                  $match[1] => $json
+                    $match[1] => $json,
                 ];
             } elseif (
                 preg_match(
-                    "/^" . $this->keyPattern . "$/",
+                    '/^' . $this->keyPattern . "$/",
                     $rawParameter,
                     $match
                 )
