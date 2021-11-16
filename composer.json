@@ -1,17 +1,20 @@
 {
-    "name": "pmvc-plugin/annotation",
-    "description": "PHP annotation parser and reader",
-    "type": "library",
-    "keywords": ["annotation", "pmvc", "plug-in"],
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Hill",
-            "email": "hill@kimo.com"
-        }
-    ],
-    "require": {
-        "pmvc/pmvc": "*"
-    },
-    "minimum-stability": "dev"
+  "name": "pmvc-plugin/annotation",
+  "description": "PHP annotation parser and reader",
+  "type": "library",
+  "keywords": ["annotation", "pmvc", "plug-in"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Hill",
+      "email": "hill@kimo.com"
+    }
+  ],
+  "require": {
+    "pmvc/pmvc": "*"
+  },
+  "require-dev": {
+    "pmvc-plugin/unit": "*"
+  },
+  "minimum-stability": "dev"
 }

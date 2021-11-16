@@ -1,11 +1,11 @@
 <?php
 namespace PMVC\PlugIn\annotation;
 
-use PMVC_TestCase;
+use PMVC\TestCase;
 
-\PMVC\l(__DIR__.'/lib/MyAttribute.php');
+\PMVC\l(__DIR__.'/resources/MyAttribute');
 
-class AttributesTest extends PMVC_TestCase
+class AttributesTest extends TestCase
 {
   private $_plug = 'annotation';
   private $_attrName = 'PMVC\PlugIn\annotation\MyAttribute';

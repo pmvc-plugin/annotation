@@ -32,11 +32,15 @@ class annotation extends \PMVC\PlugIn
       return $result;
     }
 
-    public function get($s, $keepRawData = false)
+    public function get($s, $keepRawData = false, $withoutError = false)
     {
         $doc = $this->getRawAnnotation($s);
         if (is_null($doc)) {
-            return !trigger_error('Can\'t find annotation. '.print_r($s,true));
+            if ($withoutError) {
+                return false;
+            } else {
+                return !trigger_error('Can\'t find annotation. '.print_r($s,true));
+            }
         }
 
         $parser = new AnnotationParser($doc, $keepRawData);

@@ -2,9 +2,9 @@
 
 namespace PMVC\PlugIn\annotation;
 
-use PMVC_TestCase;
+use PMVC\TestCase;
 
-class test extends PMVC_TestCase
+class test extends TestCase
 {
     private $_plug = 'annotation';
     function testPlugin()

@@ -12,7 +12,9 @@ class AnnotationReader
     {
         $reflection = new ReflectionClass($class);
         return [
-            'attrs' => is_callable([$reflection, 'getAttributes']) ? $reflection->getAttributes() : null,
+            'attrs' => is_callable([$reflection, 'getAttributes'])
+                ? $reflection->getAttributes()
+                : null,
             'doc' => $reflection->getDocComment(),
             'file' => $reflection->getFileName(),
             'startLine' => $reflection->getStartLine(),
@@ -23,7 +25,9 @@ class AnnotationReader
     {
         $reflection = new ReflectionFunction($func);
         return [
-            'attrs' => is_callable([$reflection, 'getAttributes']) ? $reflection->getAttributes() : null,
+            'attrs' => is_callable([$reflection, 'getAttributes'])
+                ? $reflection->getAttributes()
+                : null,
             'doc' => $reflection->getDocComment(),
             'file' => $reflection->getFileName(),
             'startLine' => $reflection->getStartLine(),
@@ -33,12 +37,16 @@ class AnnotationReader
     function getMethod($class, $method)
     {
         $reflection = new ReflectionMethod($class, $method);
-        $class = new ReflectionClass($class);
         return [
-            'attrs' => is_callable([$reflection, 'getAttributes']) ? $reflection->getAttributes() : null,
+            'class' => function () use ($class) {
+                return $this->getClass($class);
+            },
+            'attrs' => is_callable([$reflection, 'getAttributes'])
+                ? $reflection->getAttributes()
+                : null,
             'doc' => $reflection->getDocComment(),
-            'file' => $class->getFileName(),
-            'startLine' => $class->getStartLine(),
+            'file' => $reflection->getFileName(),
+            'startLine' => $reflection->getStartLine(),
         ];
     }
 }

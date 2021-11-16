@@ -16,6 +16,13 @@ class AnnotationParser extends \PMVC\HashMap
         $this->parse($keepRawData);
     }
 
+    public function getClass($keepRawData = false)
+    {
+        if (isset($this->_data['class'])) {
+            return new static($this->_data['class'](), $keepRawData);
+        }
+    }
+
     public function getFile()
     {
         return $this->_data['file'];

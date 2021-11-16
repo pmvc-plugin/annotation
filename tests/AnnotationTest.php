@@ -2,9 +2,9 @@
 
 namespace PMVC\PlugIn\annotation;
 
-use PMVC_TestCase;
+use PMVC\TestCase;
 
-class AnnotationTest extends PMVC_TestCase
+class AnnotationTest extends TestCase
 {
     private $_plug = 'annotation';
     function testPlugin()
@@ -55,9 +55,18 @@ class AnnotationTest extends PMVC_TestCase
           $annotation['params']
         );
     }
+
+    function testGetClassWithFunction() {
+        $plug = \PMVC\plug($this->_plug);
+        $annotation = $plug->get([__NAMESPACE__.'\FakeClass','fake2']);
+        $class = $annotation->getClass();
+        $this->assertEquals('classdoc', $class['fakeClass']);
+    }
 }
 
-
+/**
+ * @fakeClass classdoc
+ */
 class FakeClass
 {
     /**
