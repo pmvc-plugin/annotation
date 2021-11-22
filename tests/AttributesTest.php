@@ -14,19 +14,19 @@ class AttributesTest extends TestCase
   public function testGetClassAttributes() {
       $plug = \PMVC\plug($this->_plug);
       $attrs = $plug->getAttrs(FakeAttributesClass::class);
-      $this->assertEquals("foo", \PMVC\value($attrs, ['obj', $this->_attrName, 'value']));
+      $this->assertEquals("foo", \PMVC\value($attrs, ['obj', $this->_attrName, 0, 'value']));
   }
 
   public function testGetMethodAttributes() {
       $plug = \PMVC\plug($this->_plug);
       $attrs = $plug->getAttrs([FakeAttributesClass::class, "fakeFunction"]);
-      $this->assertEquals("bar", \PMVC\value($attrs, ['obj', $this->_attrName, 'value']));
+      $this->assertEquals("bar", \PMVC\value($attrs, ['obj', $this->_attrName, 0, 'value']));
   }
 
   public function testGetFuncAttributes() {
       $plug = \PMVC\plug($this->_plug);
       $attrs = $plug->getAttrs(__NAMESPACE__.'\fakeAttributesFunction');
-      $this->assertEquals("foobar", \PMVC\value($attrs, ['obj', $this->_attrName, 'value']));
+      $this->assertEquals("foobar", \PMVC\value($attrs, ['obj', $this->_attrName, 0, 'value']));
   }
 }
 

@@ -22,11 +22,12 @@ class annotation extends \PMVC\PlugIn
           $name = $a->getName();
           $args = $a->getArguments();
           $obj = (new ReflectionClass($name))->newInstanceArgs($args);
-          $result["data"][$name] = [
+          $dataArr = [
               "name" => $name,
               "args" => $args,
           ];
-          $result["obj"][$name] = $obj; 
+          \PMVC\value($result, ['data', $name], null, $dataArr, true);
+          \PMVC\value($result, ['obj', $name], null, $obj, true);
         }
       }
       return $result;
