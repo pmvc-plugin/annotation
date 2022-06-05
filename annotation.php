@@ -58,20 +58,20 @@ class annotation extends \PMVC\PlugIn
         return $parser;
     }
 
-    public function getRawAnnotation($s)
+    public function getRawAnnotation($any)
     {
         $reader = new AnnotationReader();
-        if (is_string($s)) {
-            if (class_exists($s)) {
-                return $reader->getClass($s);
-            } elseif (function_exists($s)) {
-                return $reader->getFunction($s);
+        if (is_string($any)) {
+            if (class_exists($any)) {
+                return $reader->getClass($any);
+            } elseif (function_exists($any)) {
+                return $reader->getFunction($any);
             }
-        } elseif (is_array($s) && is_callable($s)) {
-            if (method_exists($s[0], $s[1])) {
-                return $reader->getMethod($s[0], $s[1]);
-            } elseif (is_callable([$s[0], 'isCallable'])) {
-                $func = $s[0]->isCallable($s[1]);
+        } elseif (is_array($any) && is_callable($any)) {
+            if (method_exists($any[0], $any[1])) {
+                return $reader->getMethod($any[0], $any[1]);
+            } elseif (is_callable([$any[0], 'isCallable'])) {
+                $func = $any[0]->isCallable($any[1]);
                 if ($func) {
                     if (is_object($func)) {
                         return $this->getRawAnnotation([$func, '__invoke']);
@@ -81,8 +81,10 @@ class annotation extends \PMVC\PlugIn
                 }
             }
         }
-        if (is_a($s, 'Closure')) {
-            return $reader->getFunction($s);
+        if (is_a($any, 'Closure')) {
+            return $reader->getFunction($any);
+        } elseif (is_object($any)) {
+            return $reader->getClass($any);
         }
         return null;
     }
